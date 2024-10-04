@@ -5,7 +5,7 @@ body {
 }
 
 nav {
-    padding: 20px;
+    padding: 8px 20px 20px 20px;
     color: #ccc;
 }
 
@@ -67,6 +67,7 @@ nav{
     color: #0052d3;
     font-size: 22px;
     text-align: center;
+    margin: 15px 15px;
 }
 #buttonContainer {
     position: relative;
@@ -83,12 +84,38 @@ nav{
     position: relative;
     height: 45px;
     width: 100%;
+    margin-top: 15px;
     margin-bottom: 8px;
     border: 1px solid #DADCE0;
     border-radius: 7px;
     font-size: 16px;
     outline: none;
     background: none;
+    z-index: 1;
+}
+.inputFiltroContainer {
+    position: relative;
+    height: 45px;
+    width: 100%;
+    margin-bottom: 8px;
+    margin-right: 10px;
+    margin-left: 10px;
+    border: 1px solid #DADCE0;
+    border-radius: 7px;
+    font-size: 16px;
+    outline: none;
+    background: none;
+    z-index: 1;
+}
+.filtroContainer {
+    position: relative;
+    height: 45px;
+    width: 35%;
+    margin-bottom: 8px;
+    border: 1px solid #DADCE0;
+    border-radius: 7px;
+    font-size: 16px;
+    outline: none;
     z-index: 1;
 }
 
@@ -113,7 +140,21 @@ nav{
     left: 3px;
     right: 15px;
     padding: 0 4px;
-    background-color: white;
+    background-color: #ffffff;
+    font-size: 16px;
+    transition: 0.5s;
+    z-index: 10;
+    width: 90%;
+    color: #6e6e75;
+    font-weight: 550;
+    font-size: 14px;
+}
+.labelBuscar {
+    position: absolute;
+    top: -20px;
+    left: 3px;
+    right: 15px;
+    padding: 0 4px;
     font-size: 16px;
     transition: 0.5s;
     z-index: 10;
@@ -179,6 +220,62 @@ select {
     text-align: center;
 }
 
+.hoyBtn {
+    width: 50%;
+    display: block;
+    padding: 10px;
+    border: none;
+    background-color: #757d8f;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 15px;
+    margin-right: 15px;
+}
+.todoBtn {
+    width: 50%;
+    display: block;
+    padding: 10px;
+    border: none;
+    background-color: #757d8f;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 15px;
+    margin-right: 15px;
+}
+.pacBtn {
+    width: 50%;
+    display: block;
+    padding: 10px;
+    border: none;
+    background-color: #757d8f;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+.exportarBtn {
+    width: 50%;
+    display: block;
+    padding: 10px;
+    border: none;
+    background-color: #757d8f;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 15px;
+    margin-left: 15px;
+    text-align: center;
+}
+
 .imagen .fotoBtn {
 
     display: block;
@@ -197,7 +294,7 @@ select {
     display: block;
     padding: 15px 30px;
     border: none;
-    background-color: #40454d;
+    background-color: #757d8f;
     color: white;
     border-radius: 6px;
     cursor: pointer;
@@ -215,6 +312,22 @@ select {
 .fotoBtn:hover {
     background-color: #0052d3;
     transform: translateY(-2px);
+}
+.buscarBtn:hover {
+    background-color: #0052d3;
+}
+.buttonContainer  .buscarBtn {
+    width: 20%;
+    margin-bottom: 8px;
+    display: block;
+    padding: 15px 30px;
+    border: none;
+    background-color: #043b94;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
 }
 /* Hide the placeholder texts (a) */
 
@@ -258,10 +371,16 @@ select {
 /* cuerpo */
 .main-body{
     width: 70%;
-    margin-left: 10px;
     margin-bottom: 30px;
+    padding: 0 20px 20px 20px;
 }
 .main-body .container1{
+    background: rgb(255, 255, 255);
+    padding: 0.5rem 1rem 1rem 1rem;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+.main-body .container2{
     background: rgb(255, 255, 255);
     padding: 0.5rem 1rem 1rem 1rem;
     border-radius: 6px;
@@ -272,6 +391,7 @@ select {
     color: #0052d3;
     font-size: 22px;
     text-align: center;
+    margin: 15px 15px;
 }
 .promo_card{
     color: #23242a;
@@ -288,7 +408,9 @@ select {
 .patient_lists{
     display: flex;
     align-items: center;
+    text-align: center;
     justify-content: space-between;
+    width: 100%;
 }
 .row{
     display: flex;
@@ -298,12 +420,17 @@ select {
 }
 table{
     background: #fff;
-    padding: 1rem;
-    text-align: left;
+    text-align: center;
     border-radius: 10px;
+    width: 100%;
+    margin-bottom: 30px;
+
+}
+hr{
+    margin-bottom: 20px;
 }
 table td, th{
-    padding: 0.2rem 0.8rem;
+    padding: 0.2rem 0;
 }
 table th{
     font-size: 15px;
@@ -311,6 +438,9 @@ table th{
 table td{
     font-size: 13px;
     color: rgb(100, 100, 100);
+}
+.patient_lists .list{
+    width: 100%;
 }
 
 

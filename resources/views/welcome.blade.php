@@ -14,6 +14,7 @@
         <nav>
             <form action="" class="form">
                 <h1 class="title">INFORMACION PACIENTE</h1>
+                <hr/>
                 <div class="inputContainer">
                     <select name="id_tipo" id="lang">
                         <option value="CC">CEDULA</option>
@@ -42,10 +43,6 @@
                 </div>
                 <div class="inputContainer">
                     <input type="text" class="input" placeholder="a">
-                    <label for="" class="label">2do Apellido</label>
-                </div>
-                <div class="inputContainer">
-                    <input type="text" class="input" placeholder="a">
                     <label for="" class="label">1er Nombre</label>
                 </div>
                 <div class="inputContainer">
@@ -53,14 +50,14 @@
                     <label for="" class="label">2do Nombre</label>
                 </div>
                 <div class="inputContainer">
-                    <input type="text" class="input" placeholder="a">
+                    <select name="est_tipo" id="lang">
+                        <option value="F">F</option>
+                        <option value="M">M</option>
+                    </select>
                     <label for="" class="label">Sexo</label>
                 </div>
                 <div class="inputContainer">
-                    <input type="date" class="input" data-date-format="DD MM YYYY" value=""
-                           min="1997-01-01" >
-                    <input type="text" class="input" name="date" id="date"
-                           pattern="\d{4}-\d{2}-\d{2}" >
+                    <input type="date" class="input"  min="1910-01-01" >
                     <label for="" class="label">Fecha de nacimiento</label>
                 </div>
                 <div class="inputContainer">
@@ -70,6 +67,8 @@
                 <div class="inputContainer">
                     <select name="est_tipo" id="lang">
                         <option value="Primer Estudio">Primer estudio</option>
+                        <option value="Mamografía bilateral">Mamografía bilateral</option>
+                        <option value="Mamografía de control">Mamografía de control</option>
                         <option value="Otro">Otro</option>
                     </select>
                     <label for="" class="label">Tipo de estudio</label>
@@ -95,6 +94,7 @@
         <div class="main-body">
             <div class="container1">
                 <h1>ADJUNTE DOCUMENTOS</h1>
+                <hr/>
                 <div class="card_container">
                     <div class="imagen">
                         <div class="titulo">FRENTE</div>
@@ -117,15 +117,36 @@
                     </div>
                 </div>
             </div>
-            <div class="container1">
+            <div class="container2">
                 <h1>PACIENTES</h1>
-                <div class="cajabuscar">
-                    <input type="text" id="s" value="" placeholder="Buscar"  />
-                    <input class="button" type="submit" value="" />
-                    <i class="search"></i>
+                <hr/>
+                <div class="buttonContainer">
+                    <input type="submit" class="hoyBtn" value="Hoy">
+                    <input type="submit" class="todoBtn" value="Todo">
+                    <input type="submit" class="pacBtn" value="Pacientes atendidas hoy">
+                    <input type="submit" class="exportarBtn" value="Exportar">
+
                 </div>
+                <div class="buttonContainer">
+                    <div class="filtroContainer">
+                        <select name="est_tipo" id="lang">
+                            <option value="Identificacion">Identificacion</option>
+                            <option value="Fecha">Fecha</option>
+                            <option value="Nombre">Nombre</option>
+                            <option value="Apellido">Apellido</option>
+                            <option value="Entidad">Entidad</option>
+                        </select>
+{{--                        <label for="" class="labelBuscar">Filtro</label>--}}
+                    </div>
+                    <div class="inputFiltroContainer">
+                        <input type="text" class="input" placeholder="a">
+                    </div>
+                    <input type="submit" class="buscarBtn" value="Buscar">
+
+                </div>
+                <hr>
                 <div class="patient_lists">
-                    <div class="list1">
+                    <div class="list">
                         <table>
                             <thead>
                             <tr>
@@ -192,6 +213,8 @@
                         </table>
                     </div>
                 </div>
+                <hr/>
+
             </div>
 
         </div>
