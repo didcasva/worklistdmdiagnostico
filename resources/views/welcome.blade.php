@@ -57,7 +57,10 @@
                     <label for="" class="label">Sexo</label>
                 </div>
                 <div class="inputContainer">
-                    <input type="date" class="input" placeholder="a">
+                    <input type="date" class="input" data-date-format="DD MM YYYY" value=""
+                           min="1997-01-01" >
+                    <input type="text" class="input" name="date" id="date"
+                           pattern="\d{4}-\d{2}-\d{2}" >
                     <label for="" class="label">Fecha de nacimiento</label>
                 </div>
                 <div class="inputContainer">
