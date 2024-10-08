@@ -16,7 +16,7 @@
                 <h1 class="title">INFORMACION PACIENTE</h1>
                 <hr/>
                 <div class="inputContainer">
-                    <select name="id_tipo" id="lang">
+                    <select name="id_tipo" id="tipo_doc">
                         <option value="CC">CEDULA</option>
                         <option value="TI">TARJETA DE IDENTIDAD</option>
                         <option value="CE">CEDULA EXTRANJERIA</option>
@@ -28,44 +28,44 @@
                 </div>
 
                 <div class="inputContainer">
-                    <input type="number" class="input" placeholder="a">
+                    <input type="number" class="input" placeholder="a" id="identificacion">
                     <label for="" class="label">Identificacion</label>
                 </div>
 
                 <div class="inputContainer">
-                    <input type="text" class="input" placeholder="a" PATTERN="[A-Z]">
+                    <input type="text" id="apellido1" class="input" placeholder="a" PATTERN="[A-Z]">
                     <label for="" class="label">1er Apellido</label>
                 </div>
 
                 <div class="inputContainer">
-                    <input type="text" class="input" placeholder="a">
+                    <input type="text" id="apellido2" class="input" placeholder="a">
                     <label for="" class="label">2do Apellido</label>
                 </div>
                 <div class="inputContainer">
-                    <input type="text" class="input" placeholder="a">
+                    <input type="text" id="nombre" class="input" placeholder="a">
                     <label for="" class="label">1er Nombre</label>
                 </div>
                 <div class="inputContainer">
-                    <input type="text" class="input" placeholder="a">
+                    <input type="text" id="nombre2" class="input" placeholder="a">
                     <label for="" class="label">2do Nombre</label>
                 </div>
                 <div class="inputContainer">
-                    <select name="est_tipo" id="lang">
+                    <select name="est_tipo" id="sexo">
                         <option value="F">F</option>
                         <option value="M">M</option>
                     </select>
                     <label for="" class="label">Sexo</label>
                 </div>
                 <div class="inputContainer">
-                    <input type="date" class="input"  min="1910-01-01" >
+                    <input type="date" id="nacimiento" class="input"  min="1910-01-01" >
                     <label for="" class="label">Fecha de nacimiento</label>
                 </div>
                 <div class="inputContainer">
-                    <input type="text" class="input" placeholder="a">
+                    <input type="text" id="rh" class="input" placeholder="a">
                     <label for="" class="label">RH</label>
                 </div>
                 <div class="inputContainer">
-                    <select name="est_tipo" id="lang">
+                    <select name="est_tipo" id="estudio">
                         <option value="Primer Estudio">Primer estudio</option>
                         <option value="Mamografía bilateral">Mamografía bilateral</option>
                         <option value="Mamografía de control">Mamografía de control</option>
@@ -74,19 +74,19 @@
                     <label for="" class="label">Tipo de estudio</label>
                 </div>
                 <div class="inputContainer">
-                    <input type="text" class="input" placeholder="a">
+                    <input type="text" id="entidad" class="input" placeholder="a">
                     <label for="" class="label">Entidad</label>
                 </div>
                 <div class="inputContainer">
-                    <input type="text" class="input" placeholder="a">
+                    <input type="text" id="direccion" class="input" placeholder="a">
                     <label for="" class="label">Direccion</label>
                 </div>
                 <div class="inputContainer">
-                    <input type="number" class="input" placeholder="a">
+                    <input type="number" id="telefono" class="input" placeholder="a">
                     <label for="" class="label">Telefono</label>
                 </div>
                 <div class="buttonContainer">
-                    <input type="submit" class="submitBtn" value="Guardar">
+                    <input type="submit" id="guardar" class="submitBtn" value="Guardar">
                     <input type="reset" class="resetBtn" value="Limpiar">
                 </div>
             </form>
@@ -99,7 +99,7 @@
                     <div class="imagen">
                         <div class="titulo">FRENTE</div>
                         <div class="ftoCedula">
-                            <img src="/imgs/LOGO%20DM.png" >
+                            <img id="ftoFrenteId" src="/imgs/LOGO%20DM.png" >
                         </div>
                         <div class="fotoBtn">
                             <a>Tomar</a>
@@ -109,7 +109,7 @@
                     <div class="imagen">
                         <div class="titulo">REVERSO</div>
                         <div class="ftoCedula">
-                            <img src="/imgs/LOGO%20DM.png" >
+                            <img id="ftoReversoId" src="/imgs/LOGO%20DM.png" >
                         </div>
                         <div class="fotoBtn">
                             <a>Tomar</a>
