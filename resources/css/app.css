@@ -2,16 +2,10 @@
 body {
     font-family: PolySans, sans-serif;
     background: rgb(219, 219, 219);
-    transform: scale(0.75);
+    transform: scale(0.7);
     transform-origin: top left; /* Mantiene la escala desde la esquina superior izquierda */
     width: 142.85%; /* Ajuste para evitar bordes vacíos */
 }
-
-nav {
-    padding: 8px 20px 20px 20px;
-    color: #ccc;
-}
-
 
 .header{
     display: flex;
@@ -55,55 +49,6 @@ nav {
     display: flex;
     justify-content: flex-start;
 }
-.container-update {
-    display: flex;
-    justify-content: center;
-}
-.nav{
-   background: #fff;
-    border-radius: 5PX;
-    margin-bottom: 30px;
-    width: auto;
-}
-.container-formulario{
-    margin-top: 10px;
-    display: flex;
-    justify-content: center;
-}
-.buttonContainer2{
-    display: flex;
-    align-items: center;
-    text-align: center;
-     justify-content: center;
-}
-.nav h1{
-    font-weight: bolder;
-    color: #0052d3;
-    font-size: 22px;
-    text-align: center;
-    margin: 15px 15px;
-}
-.tabla-vistas {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-.tabla-vistas th, .tabla-vistas td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: center;
-}
-.tabla-vistas th {
-    background: #f4f4f4;
-}
-.tabla-vistas input {
-    width: 80px;
-    text-align: center;
-}
-.tabla-vistas td:first-child {
-    font-weight: bold;
-}
-
 
 
 /* formulario*/
@@ -444,6 +389,7 @@ select {
     border-radius: 6px;
     margin-bottom: 10px;
 }
+
 .main-body h1{
     font-weight: bolder;
     color: #0052d3;
@@ -524,11 +470,6 @@ table td{
     justify-content: center;
     align-items: center;
     color: #1a202c;
-}
-.container{
-    margin-top: 10px;
-    display: flex;
-    justify-content: flex-start;
 }
 
 #sidebar {
@@ -622,3 +563,25 @@ table td{
     border: 0;
     vertical-align: top;
 }
+.ficha-wrapper {
+    display: flex;
+    justify-content: center;  /* centra horizontal */
+    margin-top: 40px;         /* separación desde arriba */
+}
+
+.ficha-container {
+    max-width: 600px;
+    width: 100%;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.ficha-container table {
+    margin: 0 auto;
+    width: 100%;
+    text-align: left; /* mantiene alineado el contenido de la tabla */
+}
+

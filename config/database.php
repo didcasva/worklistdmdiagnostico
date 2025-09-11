@@ -87,9 +87,16 @@ return [
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8',
+            'collation' => 'Latin1_General_CI_AS',  // Asegúrate de que coincida
             'prefix' => '',
+            'strict' => true,
+            'engine' => null,
             'prefix_indexes' => true,
-            // 'encrypt' => env('DB_ENCRYPT', 'yes'),
+            'options' => [
+                PDO::ATTR_CASE => PDO::CASE_NATURAL,
+                'TrustServerCertificate' => true,
+            ],
+             'encrypt' => env('DB_ENCRYPT', 'no'),
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
 
