@@ -238,7 +238,7 @@
 
         </div>
     </div>
-    <div CLASS="footer">© 2025 DM DIAGNÓSTICO MÉDICO SAS By devRox11 and didcasva</div>
+    <div CLASS="footer">© 2025 DM DIAGNÓSTICO MÉDICO SAS By  didcasva and devRox11</div>
     <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
     <script>
         let stream; // Variable para guardar el stream de la cámara
