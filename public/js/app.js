@@ -20,7 +20,7 @@ function toggleCamara() {
             })
             .catch(error => {
                 console.error("Error al activar la cámara:", error);
-                alert("No se pudo activar la cámara.");
+                alert("⚠️ No se pudo activar la cámara.");
             });
     } else {
         stream.getTracks().forEach(track => track.stop());
@@ -32,7 +32,7 @@ function toggleCamara() {
 // Capturar imagen y asignarla al input correspondiente
 function capturarImagen(tipo) {
     if (!isCameraActive) {
-        alert("Activa la cámara primero.");
+        alert("⚠️ Activa la cámara primero.");
         return;
     }
     const videoElement = videoPreview;
