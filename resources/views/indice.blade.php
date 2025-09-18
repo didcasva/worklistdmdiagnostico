@@ -20,12 +20,16 @@
                     <tr><th>Nombre</th><td>{{ $paciente->Nombre_Completo }}</td></tr>
                     <tr><th>Entidad</th><td>{{ $paciente->Entidad }}</td></tr>
                     <tr><th>Lugar</th><td>{{ $paciente->Lugar }}</td></tr>
-                    <tr><th>Estado</th><td>{{ ucfirst($paciente->estado) }}</td></tr>
-                    <tr><th>Hora Ingreso</th><td>{{ \Carbon\Carbon::parse($paciente->HoraAtencion)->format('H:i') }}</td></tr>
+                    <tr><th>Estado</th><td data-estado="{{ $paciente->estado }}">
+                     {{ ucfirst($paciente->estado) }}
+                    </td></tr>
+                    <tr><th>Hora Ingreso</th><  <td data-hora-ingreso="{{ \Carbon\Carbon::parse($paciente->HoraAtencion)->format('Y-m-d H:i:s') }}">
+                     {{ \Carbon\Carbon::parse($paciente->HoraAtencion)->format('H:i') }}
+                    </td></tr>
                     <tr><th>Hora Salida</th><td>{{ $paciente->horafin ? \Carbon\Carbon::parse($paciente->horafin)->format('H:i') : '-' }}</td></tr>
                 </table>
 
-               <form action="{{ route('pacientes.update', $paciente->N_Orden) }}" method="POST" class="form" enctype="multipart/form-data">
+               <form action="{{ route('pacientes.update', $paciente->N_Orden) }}" id="updateformulario" method="POST" class="form" enctype="multipart/form-data">
               @csrf
 
 
@@ -117,11 +121,11 @@
     <div class="inputContainer">
         <input type="text" id="observaciones" name="observaciones" class="input"
                value="{{ old('observaciones', $paciente->observaciones) }}">
-        <label for="observaciones" class="label">Observaciones</label>
+        <label for="observaciones" class="label">Observaciones (Opcional)</label>
     </div>
 
     <div class="buttonContainer2">
-        <input type="submit" class="submitBtn" value="Guardar">
+        <input type="submit" class="submitBtn" value="Guardar" id="btnguardar">
     </div>
 </form>
 
@@ -130,5 +134,6 @@
     </div>
 
         
-
+    <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
+    <script src="{{ asset('js/update.js') }}"></script>
 </x-layout>
