@@ -6,7 +6,7 @@
         <meta charset="UTF-8"> <!-- Aquí es donde colocas la etiqueta -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <div id="contador" 
-            style="font-weight: bold; font-size: 20px; color: red; margin-bottom: 15px; text-align: left;">
+            style="font-weight: bold; font-size: 20px; color: red; text-align: left;">
             Tiempo restante: 02:00
         </div>
         <div class="header-icons">
