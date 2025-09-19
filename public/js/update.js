@@ -2,16 +2,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("updateformulario");
     const tdHoraIngreso = document.querySelector("[data-hora-ingreso]");
     const tdEstado = document.querySelector("[data-estado]");
-    const atendidoField = document.getElementById("atendido"); // tu nuevo select o input radio
+    const atendidoField = document.getElementById("atencionsiono"); // corregido
 
     if (form && tdHoraIngreso && tdEstado && atendidoField) {
         const horaIngreso = new Date(tdHoraIngreso.dataset.horaIngreso);
         const estado = tdEstado.dataset.estado;
 
         form.addEventListener("submit", function (e) {
-            const atendido = atendidoField.value; // "si" o "no"
+            const atendido = atendidoField.value; // "1" o "0"
 
-            if (estado === "pendiente" && atendido === "si") {
+            if (estado === "pendiente" && atendido === "1") {
                 const ahora = new Date();
 
                 // Diferencia en milisegundos
@@ -23,10 +23,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     alert("⚠️ El tiempo de atención no puede ser menor a 4 minutos");
                 }
             }
-            // ⚠️ Si atendido = "no", no validamos el tiempo, Laravel ya lo marca como completado.
+            // ⚠️ Si atendido === "0", no validamos el tiempo.
         });
     }
 });
+
 
 // Convertir a mayúsculas y eliminar espacios al inicio en campos específicos
 document.addEventListener("DOMContentLoaded", function () {

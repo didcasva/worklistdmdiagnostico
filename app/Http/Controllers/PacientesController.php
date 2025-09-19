@@ -348,17 +348,18 @@ class PacientesController extends Controller
         'MLIespesor' => 'nullable|integer|min:1|max:1000',
         'lado_derecho' => 'nullable|boolean',
         'lado_izquierdo' => 'nullable|boolean',
+        'atencionsiono' => 'required|boolean',
         ]);
 
         $paciente = Paciente::findOrFail($N_Orden); 
+       
      // Caso: Paciente NO se dejó atender
-        if (!$request->boolean('atencionsiono')) {
+        if ($request->atencionsiono == false) {
             $paciente->atencionsiono = false;
             $paciente->estado = 'completado';
             $paciente->observaciones = 'El paciente NO se dejó atender';
             $paciente->horafin = Carbon::now()->format('H:i:s');
             $paciente->save();
-
             return redirect('/')->with('success', 'Paciente marcado como NO atendido.');
         }
         $paciente->CCDkv = $request->CCDkv;
