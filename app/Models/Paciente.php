@@ -54,7 +54,10 @@ class Paciente extends Model
         'estado',
         'numeroplacas',
         'observaciones',
-        'horafin'
+        'horafin',
+        'atencionsiono',
+        'lado_derecho',
+        'lado_izquierdo'
     ];
     public function tecnologa() {
         return $this->belongsTo(Tecnologa::class);

@@ -27,6 +27,14 @@
                      {{ \Carbon\Carbon::parse($paciente->HoraAtencion)->format('H:i') }}
                     </td></tr>
                     <tr><th>Hora Salida</th><td>{{ $paciente->horafin ? \Carbon\Carbon::parse($paciente->horafin)->format('H:i') : '-' }}</td></tr>
+                <div class="inputContainer">
+                    <label for="atencionsiono" class="label">¿El paciente se dejó atender?</label>
+                    <select id="atencionsiono" name="atencionsiono" required>
+                        <option value="1" {{ $paciente->atencionsiono ? 'selected' : '' }}>Sí</option>
+                        <option value="0" {{ !$paciente->atencionsiono ? 'selected' : '' }}>No</option>
+                    </select>
+                </div>
+
                 </table>
 
                <form action="{{ route('pacientes.update', $paciente->N_Orden) }}" id="updateformulario" method="POST" class="form" enctype="multipart/form-data">

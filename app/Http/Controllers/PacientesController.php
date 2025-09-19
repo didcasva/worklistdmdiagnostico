@@ -40,7 +40,8 @@ class PacientesController extends Controller
             'Fecha_Estudio',
             'Entidad',
             'Lugar',
-            'estado'
+            'estado',
+            'atencionsiono'
         ];
     
         switch ($filtro) {
@@ -78,7 +79,8 @@ class PacientesController extends Controller
             'Nombre_Completo',
             'Fecha_Estudio',
             'Entidad',
-            'Lugar'
+            'Lugar',
+            'atencionsiono',
         ];
 
         $query = Paciente::select($columns);
@@ -330,25 +332,35 @@ class PacientesController extends Controller
     public function update(Request $request, $N_Orden)
         {
         $request->validate([
-        'CCDkv' => 'required|integer|min:20|max:35',
-        'CCDmas' => 'required|integer|min:10|max:200',
-        'MLDkv' => 'required|integer|min:20|max:35',
-        'MLDmas' => 'required|integer|min:10|max:200',
-        'CCIkv' => 'required|integer|min:20|max:35',
-        'CCImas' => 'required|integer|min:10|max:200',
-        'MLIkv' => 'required|integer|min:20|max:35',
-        'MLImas' => 'required|integer|min:10|max:200',
-        'numeroplacas' => 'required|integer|min:1|max:16',
+        'CCDkv' => 'nullable|integer|min:20|max:35',
+        'CCDmas' => 'nullable|integer|min:10|max:200',
+        'MLDkv' => 'nullable|integer|min:20|max:35',
+        'MLDmas' => 'nullable|integer|min:10|max:200',
+        'CCIkv' => 'nullable|integer|min:20|max:35',
+        'CCImas' => 'nullable|integer|min:10|max:200',
+        'MLIkv' => 'nullable|integer|min:20|max:35',
+        'MLImas' => 'nullable|integer|min:10|max:200',
+        'numeroplacas' => 'nullable|integer|min:1|max:16',
         'observaciones' => 'nullable|string|max:255',
         'CCDespesor' => 'nullable|integer|min:1|max:1000',
         'MLDespesor' => 'nullable|integer|min:1|max:1000',
         'CCIespesor' => 'nullable|integer|min:1|max:1000',
         'MLIespesor' => 'nullable|integer|min:1|max:1000',
-        'lado_derecho' => 'required|boolean',
-        'lado_izquierdo' => 'required|boolean',
+        'lado_derecho' => 'nullable|boolean',
+        'lado_izquierdo' => 'nullable|boolean',
         ]);
 
         $paciente = Paciente::findOrFail($N_Orden); 
+     // Caso: Paciente NO se dejó atender
+        if (!$request->boolean('atencionsiono')) {
+            $paciente->atencionsiono = false;
+            $paciente->estado = 'completado';
+            $paciente->observaciones = 'El paciente NO se dejó atender';
+            $paciente->horafin = Carbon::now()->format('H:i:s');
+            $paciente->save();
+
+            return redirect('/')->with('success', 'Paciente marcado como NO atendido.');
+        }
         $paciente->CCDkv = $request->CCDkv;
         $paciente->CCDmas = $request->CCDmas;
         $paciente->MLDkv = $request->MLDkv;

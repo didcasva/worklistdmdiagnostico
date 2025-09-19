@@ -82,6 +82,21 @@ $(document).ready(function () {
                 tabla.empty();
                 if (data.data.length > 0) {
                     data.data.forEach(paciente => {
+                        // 👉 Aquí armamos el botón según el campo atencionsiono
+                    let botonAccion = '';
+
+                    if (paciente.atencionsiono == 0) {
+                        // Si NO se dejó atender, no hay botón
+                        botonAccion = `<span class="badge bg-secondary">No atendido</span>`;
+                    } else {
+                        // Si se dejó atender, aparece Editar/Actualizar
+                        botonAccion = `
+                            <a href="/dmlist/public/pacientes/${paciente.N_Orden}/editar" 
+                               class="btn btn-sm ${paciente.estado === 'pendiente' ? 'btn-warning' : 'btn-success'}">
+                               ${paciente.estado === 'pendiente' ? 'Editar' : 'Actualizar'}
+                            </a>
+                        `;
+                    }
                         tabla.append(`
                             <tr>
                                 <td>${paciente.N_Orden ?? 'N/A'}</td>
@@ -90,12 +105,7 @@ $(document).ready(function () {
                                 <td>${paciente.Fecha_Estudio ?? 'N/A'}</td>
                                 <td>${paciente.Entidad ?? 'N/A'}</td>
                                 <td>${paciente.Lugar ?? 'N/A'}</td>
-                                <td>
-                                    <a href="/dmlist/public/pacientes/${paciente.N_Orden}/editar" 
-                                    class="btn btn-sm ${paciente.estado === 'pendiente' ? 'btn-warning' : 'btn-success'}">
-                                    ${paciente.estado === 'pendiente' ? 'Editar' : 'Actualizar'}
-                                    </a>
-                                </td>
+                                <td>${botonAccion}</td>
                             </tr>
                         `);
                     });
@@ -136,6 +146,21 @@ $('#buscarBtn').on('click', function () {
             tabla.empty();
             if (data.pacientes.length > 0) {
                 data.pacientes.forEach(paciente => {
+                      // 👉 Aquí armamos el botón según el campo atencionsiono
+                    let botonAccion = '';
+
+                    if (paciente.atencionsiono == 0) {
+                        // Si NO se dejó atender, no hay botón
+                        botonAccion = `<span class="badge bg-secondary">No atendido</span>`;
+                    } else {
+                        // Si se dejó atender, aparece Editar/Actualizar
+                        botonAccion = `
+                            <a href="/dmlist/public/pacientes/${paciente.N_Orden}/editar" 
+                               class="btn btn-sm ${paciente.estado === 'pendiente' ? 'btn-warning' : 'btn-success'}">
+                               ${paciente.estado === 'pendiente' ? 'Editar' : 'Actualizar'}
+                            </a>
+                        `;
+                    }
                     tabla.append(`
                         <tr>
                             <td>${paciente.N_Orden}</td>
@@ -144,12 +169,7 @@ $('#buscarBtn').on('click', function () {
                             <td>${paciente.Fecha_Estudio}</td>
                             <td>${paciente.Entidad}</td>
                             <td>${paciente.Lugar}</td>
-                            <td>
-                                <a href="/dmlist/public/pacientes/${paciente.N_Orden}/editar" 
-                                class="btn btn-sm ${paciente.estado === 'pendiente' ? 'btn-warning' : 'btn-success'}">
-                                ${paciente.estado === 'pendiente' ? 'Editar' : 'Actualizar'}
-                                </a>
-                            </td>
+                            <td>${botonAccion}</td>
                         </tr>
                     `);
                 });
