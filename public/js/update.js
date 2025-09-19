@@ -15,9 +15,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 const diffMs = ahora - horaIngreso;
                 const diffMin = diffMs / 1000 / 60; // minutos
 
-                if (diffMin < 5) {
+                if (diffMin < 4) {
                     e.preventDefault();
-                    alert("⚠️ El tiempo de atención no puede ser menor a 5 minutos cuando el estado es 'pendiente'.");
+                    alert("⚠️ El tiempo de atención no puede ser menor a 4 minutos");
                 }
             }
         });
