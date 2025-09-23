@@ -542,17 +542,17 @@ class PacientesController extends Controller
                     $paciente->observaciones,
                     $paciente->CCDkv,
                     $paciente->CCDmas,
-                    $paciente->CCDdosis,
+                    number_format($paciente->CCDdosis, 2),   // <-- 2 decimales
                     $paciente->MLDkv,
                     $paciente->MLDmas,
-                    $paciente->MLDdosis,
+                    number_format($paciente->MLDdosis, 2),   // <-- 2 decimales
                     $paciente->CCIkv,
                     $paciente->CCImas,
-                    $paciente->CCIdosis,
+                    number_format($paciente->CCIdosis, 2),   // <-- 2 decimales
                     $paciente->MLIkv,
                     $paciente->MLImas,
-                    $paciente->MLIdosis,
-                    $paciente->total_dosis,
+                    number_format($paciente->MLIdosis, 2),   // <-- 2 decimales
+                    number_format($paciente->total_dosis, 2),// <-- 2 decimales
                     $paciente->CCDespesor,
                     $paciente->MLDespesor,
                     $paciente->CCIespesor,
