@@ -45,29 +45,38 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-// Validar que se seleccione una opción en el campo "¿Se dejó atender?"
 document.addEventListener("DOMContentLoaded", function () {
     const atencionSelect = document.getElementById("atencionsiono");
-    const camposTecnicos = document.querySelectorAll("input[name$='kv'], input[name$='mas'], input[name$='espesor'],input[name='lado_'], #numeroplacas, #observaciones"); 
-    const estadoField = document.createElement("input");
+    const camposTecnicos = document.querySelectorAll(
+        "input[name$='kv'], input[name$='mas'], input[name$='espesor'], input[name='lado_'], #numeroplacas, #observaciones"
+    ); 
+    const hiddenAtencionsiono = document.getElementById("hiddenAtencionsiono");
 
-    // Campo oculto para forzar el estado "completado"
+    // Crear input hidden para estado y asignar valor inicial desde Blade
+    const estadoField = document.createElement("input");
     estadoField.type = "hidden";
     estadoField.name = "estado";
+    estadoField.value = document.querySelector("td[data-estado]")?.dataset.estado || "pendiente"; 
     document.getElementById("updateformulario").appendChild(estadoField);
 
     function toggleCampos() {
         if (atencionSelect.value === "0") {
-            // Si el paciente NO se dejó atender
+            // Paciente NO atendido
             camposTecnicos.forEach(campo => {
-                campo.value = "";       // Limpia valores
-                campo.disabled = true;  // Deshabilita edición
+                campo.value = "";
+                campo.disabled = true;
             });
-            estadoField.value = "completado"; // Forzar estado
+            estadoField.value = "completado";   // cerrar registro
+            hiddenAtencionsiono.value = 0;       // actualizar hidden
         } else {
-            // Si el paciente sí se atendió
+            // Paciente SÍ atendido
             camposTecnicos.forEach(campo => campo.disabled = false);
-            estadoField.value = "pendiente"; // Mantener flujo normal
+
+            // Solo poner pendiente si no estaba completado
+            if (estadoField.value !== "completado") {
+                estadoField.value = "pendiente";
+            }
+            hiddenAtencionsiono.value = 1;       // actualizar hidden
         }
     }
 

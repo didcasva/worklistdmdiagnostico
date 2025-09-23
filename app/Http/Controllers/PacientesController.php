@@ -350,6 +350,18 @@ class PacientesController extends Controller
         'lado_izquierdo' => 'nullable|boolean',
         'atencionsiono' => 'required|boolean',
         ]);
+            // función que calcula dosis para cualquier vista
+        function calcularDosis($kv, $mas, $espesor_mm, $calibracion = 0.09998, $ffa = 1.000) {
+            // convertir mm → cm porque la fórmula trabaja en cm
+            $espesor_cm = $espesor_mm / 10;
+
+            // tu modelo matemático
+            $fk  = 0.1046 * $kv - 1.9518;
+            $inv = pow((60 / (60 - $espesor_cm)), 2);
+            $dosis = $fk * $inv * $mas * $ffa * $calibracion;
+
+            return $dosis;
+        }
 
         $paciente = Paciente::findOrFail($N_Orden); 
        
@@ -362,6 +374,7 @@ class PacientesController extends Controller
             $paciente->save();
             return redirect('/')->with('success', 'Paciente marcado como NO atendido.');
         }
+        // Caso: Paciente se atendió, validar campos obligatorios
         $paciente->CCDkv = $request->CCDkv;
         $paciente->CCDmas = $request->CCDmas;
         $paciente->MLDkv = $request->MLDkv;
@@ -374,6 +387,11 @@ class PacientesController extends Controller
         $paciente->MLDespesor = $request->MLDespesor;
         $paciente->CCIespesor = $request->CCIespesor;
         $paciente->MLIespesor = $request->MLIespesor;
+        $paciente->CCDdosis = calcularDosis($request->CCDkv, $request->CCDmas, $request->CCDespesor);
+        $paciente->MLDdosis = calcularDosis($request->MLDkv, $request->MLDmas, $request->MLDespesor);
+        $paciente->CCIdosis = calcularDosis($request->CCIkv, $request->CCImas, $request->CCIespesor);
+        $paciente->MLIdosis = calcularDosis($request->MLIkv, $request->MLImas, $request->MLIespesor);
+        $paciente->total_dosis = ($paciente->CCDdosis ?? 0) + ($paciente->MLDdosis ?? 0) + ($paciente->CCIdosis ?? 0) + ($paciente->MLIdosis ?? 0);
         $paciente->lado_derecho = $request->lado_derecho;
         $paciente->lado_izquierdo = $request->lado_izquierdo;
         $paciente->numeroplacas = $request->numeroplacas;
@@ -387,6 +405,9 @@ class PacientesController extends Controller
         return redirect('/')->with('success', 'Paciente actualizado correctamente.');
 
     }
+
+
+    
     public function exportar()
     {
         // Obtén la fecha de hoy
@@ -449,12 +470,17 @@ class PacientesController extends Controller
             'Observaciones',
             'CCDkv',
             'CCDmas',
+            'CCDdosis',
             'MLDkv',
             'MLDmas',
+            'MLDdosis',
             'CCIkv',
             'CCImas',
+            'CCIdosis',
             'MLIkv',
             'MLImas',
+            'MLIdosis',
+            'total_dosis',
             'CCDespesor',
             'MLDespesor',
             'CCIespesor',
@@ -516,12 +542,17 @@ class PacientesController extends Controller
                     $paciente->observaciones,
                     $paciente->CCDkv,
                     $paciente->CCDmas,
+                    $paciente->CCDdosis,
                     $paciente->MLDkv,
                     $paciente->MLDmas,
+                    $paciente->MLDdosis,
                     $paciente->CCIkv,
                     $paciente->CCImas,
+                    $paciente->CCIdosis,
                     $paciente->MLIkv,
                     $paciente->MLImas,
+                    $paciente->MLIdosis,
+                    $paciente->total_dosis,
                     $paciente->CCDespesor,
                     $paciente->MLDespesor,
                     $paciente->CCIespesor,

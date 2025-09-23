@@ -256,24 +256,35 @@ document.getElementById('miFormulario').addEventListener('submit', function (eve
         boton.disabled = true;
     }
 });
-// Guardar selección de tecnología para el dia actual
+// ==========================
+// Guardar selección de tecnología para el día actual
+// ==========================
 document.addEventListener('DOMContentLoaded', function () {
     const selectTecnologia = document.getElementById('tecnologa');
     const today = new Date().toISOString().split('T')[0];
     const storageKey = `tecnologa_seleccionada_${today}`;
+
+    // Recuperar valor guardado
     const tecnologiaGuardada = localStorage.getItem(storageKey);
-    if (tecnologiaGuardada) {
+
+    if (tecnologiaGuardada && [...selectTecnologia.options].some(opt => opt.value === tecnologiaGuardada)) {
         selectTecnologia.value = tecnologiaGuardada;
     }
+
+    // Guardar al cambiar
     selectTecnologia.addEventListener('change', function () {
         localStorage.setItem(storageKey, this.value);
     });
-    Object.keys(localStorage).forEach(key => {
+
+    // Limpiar claves viejas (otros días)
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
         if (key.startsWith('tecnologa_seleccionada_') && key !== storageKey) {
             localStorage.removeItem(key);
         }
-    });
+    }
 });
+
 
 // ==========================
 // ⏳ Cronómetro 2 min y deshabilitar botón guardar
@@ -298,3 +309,42 @@ function actualizarContador() {
     }
 }
 setInterval(actualizarContador, 1000);
+
+// ==========================
+// Persistir Entidad y Lugar por día
+// ==========================
+document.addEventListener('DOMContentLoaded', function () {
+    const entidadInput = document.getElementById('entidad');
+    const lugarInput   = document.getElementById('lugar');
+
+    const today = new Date().toISOString().split('T')[0];
+    const storageKeyEntidad = `entidad_${today}`;
+    const storageKeyLugar   = `lugar_${today}`;
+
+    // Cargar valores guardados si existen
+    const entidadGuardada = localStorage.getItem(storageKeyEntidad);
+    const lugarGuardada   = localStorage.getItem(storageKeyLugar);
+
+    if (entidadGuardada) entidadInput.value = entidadGuardada;
+    if (lugarGuardada)   lugarInput.value = lugarGuardada;
+
+    // Guardar al cambiar (cuando la tecnóloga edita una vez)
+    entidadInput.addEventListener('change', function () {
+        localStorage.setItem(storageKeyEntidad, this.value);
+    });
+
+    lugarInput.addEventListener('change', function () {
+        localStorage.setItem(storageKeyLugar, this.value);
+    });
+
+    // Limpiar datos de días anteriores
+    Object.keys(localStorage).forEach(key => {
+        if (key.startsWith('entidad_') && key !== storageKeyEntidad) {
+            localStorage.removeItem(key);
+        }
+        if (key.startsWith('lugar_') && key !== storageKeyLugar) {
+            localStorage.removeItem(key);
+        }
+    });
+});
+

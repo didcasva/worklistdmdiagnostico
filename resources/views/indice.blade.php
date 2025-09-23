@@ -30,16 +30,22 @@
          
 
                 </table>
+               
 
                <form action="{{ route('pacientes.update', $paciente->N_Orden) }}" id="updateformulario" method="POST" class="form" enctype="multipart/form-data">
               @csrf
                 <div class="inputContainer">
-                    <label for="atencionsiono" class="label">¿El paciente se dejó atender?</label>
-                     <select id="atencionsiono" name="atencionsiono" required>
+                <label for="atencionsiono" class="label">¿El paciente se dejó atender?</label>
+                <select id="atencionsiono" name="atencionsiono" 
+                    {{ $paciente->estado === 'completado' ? 'disabled' : '' }}>
                     <option value="1" {{ old('atencionsiono', $paciente->atencionsiono) == 1 ? 'selected' : '' }}>Sí</option>
                     <option value="0" {{ old('atencionsiono', $paciente->atencionsiono) == 0 ? 'selected' : '' }}>No</option>
-                    </select>
-                </div>
+                </select>
+
+                {{-- Campo hidden para que siempre se envíe --}}
+                <input type="hidden" name="atencionsiono" id="hiddenAtencionsiono" value="{{ $paciente->atencionsiono }}">
+                 </div>
+
 
                 <table class="tabla-vistas">
                     <thead>

@@ -57,7 +57,12 @@ class Paciente extends Model
         'horafin',
         'atencionsiono',
         'lado_derecho',
-        'lado_izquierdo'
+        'lado_izquierdo',
+        'CCDdosis',
+        'MLDdosis',
+        'CCIdosis',
+        'MLIdosis',
+        'total_dosis'
     ];
     public function tecnologa() {
         return $this->belongsTo(Tecnologa::class);
