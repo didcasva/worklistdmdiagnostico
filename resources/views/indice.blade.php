@@ -53,7 +53,7 @@
                             <th>Vista</th>
                             <th>KV</th>
                             <th>mAs</th>
-                            <th>Espesor (mm)</th>
+                            <th>Espesor (cm)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -61,25 +61,25 @@
                         <td>CCD</td>
                         <td><input type="number" name="CCDkv" value="{{ old('CCDkv', $paciente->CCDkv ?? 28) }}" min="20" max="35" required></td>
                         <td><input type="number" name="CCDmas" value="{{ old('CCDmas', $paciente->CCDmas ?? 80) }}" min="10" max="200" required></td>
-                        <td><input type="number" name="CCDespesor" value="{{ old('CCDespesor', $paciente->CCDespesor) }}" min="1" max="1000" ></td>
+                        <td><input type="number" name="CCDespesor" value="{{ old('CCDespesor', $paciente->CCDespesor) }}" min="1" max="20" ></td>
                         </tr>
                         <tr>
                         <td>MLD</td>
                         <td><input type="number" name="MLDkv" value="{{ old('MLDkv', $paciente->MLDkv ?? 28) }}" min="20" max="35" required></td>
                         <td><input type="number" name="MLDmas" value="{{ old('MLDmas', $paciente->MLDmas ?? 80) }}" min="10" max="200" required></td>
-                        <td><input type="number" name="MLDespesor" value="{{ old('MLDespesor', $paciente->MLDespesor) }}" min="1" max="1000" ></td>
+                        <td><input type="number" name="MLDespesor" value="{{ old('MLDespesor', $paciente->MLDespesor) }}" min="1" max="20" ></td>
                         </tr>
                         <tr>
                         <td>CCI</td>
                         <td><input type="number" name="CCIkv" value="{{ old('CCIkv', $paciente->CCIkv ?? 28) }}" min="20" max="35" required></td>
                         <td><input type="number" name="CCImas" value="{{ old('CCImas', $paciente->CCImas ?? 80) }}" min="10" max="200" required></td>
-                        <td><input type="number" name="CCIespesor" value="{{ old('CCIespesor', $paciente->CCIespesor) }}" min="1" max="1000" ></td>
+                        <td><input type="number" name="CCIespesor" value="{{ old('CCIespesor', $paciente->CCIespesor) }}" min="1" max="20" ></td>
                         </tr>
                         <tr>
                         <td>MLI</td>
                         <td><input type="number" name="MLIkv" value="{{ old('MLIkv', $paciente->MLIkv ?? 28) }}" min="20" max="35" required></td>
                         <td><input type="number" name="MLImas" value="{{ old('MLImas', $paciente->MLImas ?? 80) }}" min="10" max="200" required></td>
-                        <td><input type="number" name="MLIespesor" value="{{ old('MLIespesor', $paciente->MLIespesor) }}" min="1" max="1000" ></td>
+                        <td><input type="number" name="MLIespesor" value="{{ old('MLIespesor', $paciente->MLIespesor) }}" min="1" max="20" ></td>
                         </tr>
                     </tbody>
                 </table>

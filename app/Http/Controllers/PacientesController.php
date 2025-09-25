@@ -351,11 +351,9 @@ class PacientesController extends Controller
         'atencionsiono' => 'required|boolean',
         ]);
             // función que calcula dosis para cualquier vista
-        function calcularDosis($kv, $mas, $espesor_mm, $calibracion = 0.09998, $ffa = 1.000) {
-            // convertir mm → cm porque la fórmula trabaja en cm
-            $espesor_cm = $espesor_mm / 10;
-
-            // tu modelo matemático
+        function calcularDosis($kv, $mas, $espesor_cm, $calibracion = 0.09998, $ffa = 1.000) {
+            
+            // cálculo de dosis
             $fk  = 0.1046 * $kv - 1.9518;
             $inv = pow((60 / (60 - $espesor_cm)), 2);
             $dosis = $fk * $inv * $mas * $ffa * $calibracion;
