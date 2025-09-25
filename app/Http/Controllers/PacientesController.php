@@ -352,7 +352,9 @@ class PacientesController extends Controller
         ]);
             // función que calcula dosis para cualquier vista
         function calcularDosis($kv, $mas, $espesor_cm, $calibracion = 0.09998, $ffa = 1.000) {
-            
+            if (is_null($kv) || is_null($mas) || is_null($espesor_cm) || $espesor_cm <= 0) {
+                return null; // Retorna null si falta algún dato o espesor es inválido
+            }
             // cálculo de dosis
             $fk  = 0.1046 * $kv - 1.9518;
             $inv = pow((60 / (60 - $espesor_cm)), 2);
