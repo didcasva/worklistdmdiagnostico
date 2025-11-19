@@ -198,6 +198,7 @@
                         <!-- Cantidad de Pacientes -->
                         <p id="totalPacientes">Total: </p>
                         <button class="exportarBtn">Exportar</button>
+                        <button class="exportarexcelBtn">Exportar 4505 Excel</button>
                         <p id="mensajeNotificacion" style="color: red; display: none;"></p> <!-- Para mensajes de error -->
 
                     </div>

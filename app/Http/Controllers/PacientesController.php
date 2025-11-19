@@ -14,6 +14,9 @@ use App\Models\UnidadMovil;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Shared\Date as ExcelDate;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 // importar modelo unidad movil
 class PacientesController extends Controller
@@ -414,12 +417,12 @@ class PacientesController extends Controller
         $hoy = Carbon::today()->toDateString();
         
         // 🔹 Obtén la unidad desde la tabla unidamovil
-    $unidad = UnidadMovil::value('unidad'); // asume que solo hay 1 registro
-    if (!$unidad) {
-        return response()->json([
-            'message' => 'No se encontró unidad en la base de datos.'
-        ], 404);
-    }
+        $unidad = UnidadMovil::value('unidad'); // asume que solo hay 1 registro
+        if (!$unidad) {
+            return response()->json([
+                'message' => 'No se encontró unidad en la base de datos.'
+            ], 404);
+        }
         // Filtra los registros de la tabla `pacientes` por la fecha de hoy en `Fecha_Estudio` y la tecnologa
         $pacientes = Paciente::with('tecnologa')
         ->whereDate('Fecha_Estudio', $hoy)
@@ -564,7 +567,7 @@ class PacientesController extends Controller
 
             fclose($file);
         };
-    // 🔹 Usa la unidad en el nombre del archivo
+        // 🔹 Usa la unidad en el nombre del archivo
         $filename = "pacientes_{$unidad}_{$hoy}.csv";
         // Retorna el archivo CSV para descarga
        return Response::stream($callback, 200, [
@@ -575,4 +578,233 @@ class PacientesController extends Controller
         "Expires" => "0"
     ]);
     }
+    public function exportar4505()
+    {
+        // Fecha de hoy
+        $hoy = Carbon::today()->toDateString();
+        $ano = Carbon::now()->year;
+
+        // Unidad móvil
+        $unidad = UnidadMovil::value('unidad');
+        if (!$unidad) {
+            return response()->json([
+                'message' => 'No se encontró unidad en la base de datos.'
+            ], 404);
+        }
+
+        // Mismos pacientes que usas para el CSV
+        $pacientes = Paciente::with('tecnologa')
+            ->whereDate('Fecha_Estudio', $hoy)
+            ->get();
+
+        if ($pacientes->isEmpty()) {
+            return response()->json([
+                'message' => 'No hay registros disponibles para exportar en la fecha seleccionada.'
+            ], 404);
+        }
+
+        // Validar estados
+        $pendientes = $pacientes->where('estado', 'pendiente');
+        if ($pendientes->isNotEmpty()) {
+            return response()->json([
+                'message' => 'Existen pacientes en estado pendiente. Todos deben estar completados antes de exportar.'
+            ], 400);
+        }
+
+        // Ruta plantilla
+        $templatePath = storage_path('app/plantillas/4505_BASE.xlsx');
+        if (!file_exists($templatePath)) {
+            return response()->json([
+                'message' => 'No se encontró la plantilla 4505_BASE.xlsx en storage/app/plantillas.'
+            ], 500);
+        }
+
+        // Cargar plantilla
+        $spreadsheet = IOFactory::load($templatePath);
+        $sheet = $spreadsheet->getSheetByName('BASE') ?? $spreadsheet->getActiveSheet();
+
+        // En tu plantilla, los encabezados están en la fila 8/9.
+        // Los datos empiezan en la fila 10.
+        $row = 10;
+        $consecutivo = 1;
+
+        foreach ($pacientes as $paciente) {
+
+            // 📅 Fechas y tiempos (lo mismo que hacías en CSV)
+            $fechaHoraAtencion = Carbon::parse($paciente->Fecha_Estudio . ' ' . $paciente->HoraAtencion);
+            $fechaHoraSalida   = Carbon::parse($paciente->Fecha_Estudio . ' ' . $paciente->horafin);
+
+            $fechanacimieto = Carbon::createFromDate(
+                $paciente->Ano,
+                $paciente->Mes,
+                $paciente->Dia
+            );
+
+            $horaInicio = Carbon::parse($paciente->HoraAtencion);
+            $horaFin    = Carbon::parse($paciente->horafin);
+            $minutosAtencion = $horaInicio->diffInMinutes($horaFin);
+
+            // 🔢 A: Consecutivo
+            $sheet->setCellValue("A{$row}", $consecutivo);
+
+            // B: No. Orden
+            $sheet->setCellValue("B{$row}", $paciente->N_Orden);
+
+            // C: Tipo de Documento
+            $sheet->setCellValue("C{$row}", $paciente->Tipo_Documento);
+
+            // D: Número
+            $sheet->setCellValue("D{$row}", $paciente->Cedula);
+
+            // E–H: Nombres y apellidos
+            $sheet->setCellValue("E{$row}", $paciente->P_Apellido);
+            $sheet->setCellValue("F{$row}", $paciente->S_Apellido);
+            $sheet->setCellValue("G{$row}", $paciente->P_Nombre);
+            $sheet->setCellValue("H{$row}", $paciente->S_Nombre);
+
+            // I: Sexo
+            $sheet->setCellValue("I{$row}", $paciente->Sexo);
+
+            // J–L: Año, Mes, Día de nacimiento (grupo "Fecha De Nacimiento")
+            $sheet->setCellValue("J{$row}", $paciente->Ano);
+            $sheet->setCellValue("K{$row}", $paciente->Mes);
+            $sheet->setCellValue("L{$row}", $paciente->Dia);
+
+            // M: RH
+            $sheet->setCellValue("M{$row}", $paciente->Rh);
+
+            // N: Edad
+            $sheet->setCellValue("N{$row}", $paciente->Edad);
+
+            // O: FECHA DE NACIMIENTO (fecha completa en tipo fecha Excel)
+            $sheet->setCellValue("O{$row}", ExcelDate::PHPToExcel($fechanacimieto));
+            $sheet->getStyle("O{$row}")
+                ->getNumberFormat()
+                ->setFormatCode('dd/mm/yyyy');
+
+            // P: Tipo de Estudio (si tienes ese campo en la tabla, si no, déjalo en null)
+            $sheet->setCellValue("P{$row}", $paciente->Tipo_Estudio ?? null);
+
+            // Q: Entidad
+            $sheet->setCellValue("Q{$row}", $paciente->Entidad);
+
+            // R: Lugar
+            $sheet->setCellValue("R{$row}", $paciente->Lugar);
+
+            // S: Nombre Completo (lo armamos aquí)
+            $sheet->setCellValue("S{$row}", trim(
+                "{$paciente->P_Nombre} {$paciente->S_Nombre} {$paciente->P_Apellido} {$paciente->S_Apellido}"
+            ));
+
+            // T–U: Resultado de Mamografía / BI-RADS (si tienes esos campos, si no quedan vacíos)
+            // $sheet->setCellValue("T{$row}", $paciente->resultado_mamografia ?? null);
+            // $sheet->setCellValue("U{$row}", $paciente->birads ?? null);
+
+            // V: Fecha de estudio
+            $sheet->setCellValue("V{$row}", ExcelDate::PHPToExcel(
+                Carbon::parse($paciente->Fecha_Estudio)
+            ));
+            $sheet->getStyle("V{$row}")
+                ->getNumberFormat()
+                ->setFormatCode('dd/mm/yyyy');
+
+            // W: Hora atención (como texto, o puedes formatear hora)
+            $HoraAtencion = \Carbon\Carbon::parse($paciente->HoraAtencion);
+            $sheet->setCellValue("W{$row}", ExcelDate::PHPToExcel($HoraAtencion));
+            $sheet->getStyle("W{$row}")
+                ->getNumberFormat()
+                ->setFormatCode('hh:mm:ss');
+
+            // X: Dirección
+            $sheet->setCellValue("X{$row}", $paciente->Direccion);
+
+            // Y: Teléfono
+            $sheet->setCellValue("Y{$row}", $paciente->Telefono);
+
+            // Z–AB: Tecnóloga
+            $sheet->setCellValue("Z{$row}", optional($paciente->tecnologa)->CodigoRM);
+            $sheet->setCellValue("AA{$row}", optional($paciente->tecnologa)->NumDocumento);
+            $sheet->setCellValue("AB{$row}", optional($paciente->tecnologa)->NombreCompleto);
+
+            // AC: FechaHoraAtencion
+            $sheet->setCellValue("AC{$row}", ExcelDate::PHPToExcel($fechaHoraAtencion));
+            $sheet->getStyle("AC{$row}")
+                ->getNumberFormat()
+                ->setFormatCode('dd/mm/yyyy hh:mm');
+
+            // AD: FechaHoraSalida
+            $sheet->setCellValue("AD{$row}", ExcelDate::PHPToExcel($fechaHoraSalida));
+            $sheet->getStyle("AD{$row}")
+                ->getNumberFormat()
+                ->setFormatCode('dd/mm/yyyy hh:mm');
+
+            // AE: HoraFin
+            $horaFin = \Carbon\Carbon::parse($paciente->horafin);
+            $sheet->setCellValue("AE{$row}", ExcelDate::PHPToExcel($horaFin));
+            $sheet->getStyle("AE{$row}")
+                ->getNumberFormat()
+                ->setFormatCode('hh:mm:ss');
+
+            // AF: NumeroPlacas
+            $sheet->setCellValue("AF{$row}", $paciente->numeroplacas);
+
+            // AG: MinutosAtencion
+            $sheet->setCellValue("AG{$row}", $minutosAtencion);
+
+            // AH: Observaciones
+            $sheet->setCellValue("AH{$row}", $paciente->observaciones);
+
+            // AI–AK: CCD
+            $sheet->setCellValue("AI{$row}", $paciente->CCDkv);
+            $sheet->setCellValue("AJ{$row}", $paciente->CCDmas);
+            $sheet->setCellValue("AK{$row}", round($paciente->CCDdosis, 2));
+
+            // AL–AN: MLD
+            $sheet->setCellValue("AL{$row}", $paciente->MLDkv);
+            $sheet->setCellValue("AM{$row}", $paciente->MLDmas);
+            $sheet->setCellValue("AN{$row}", round($paciente->MLDdosis, 2));
+
+            // AO–AQ: CCI
+            $sheet->setCellValue("AO{$row}", $paciente->CCIkv);
+            $sheet->setCellValue("AP{$row}", $paciente->CCImas);
+            $sheet->setCellValue("AQ{$row}", round($paciente->CCIdosis, 2));
+
+            // AR–AT: MLI
+            $sheet->setCellValue("AR{$row}", $paciente->MLIkv);
+            $sheet->setCellValue("AS{$row}", $paciente->MLImas);
+            $sheet->setCellValue("AT{$row}", round($paciente->MLIdosis, 2));
+
+            // AU: total_dosis
+            $sheet->setCellValue("AU{$row}", round($paciente->total_dosis, 2));
+
+            // AV–AY: espesores
+            $sheet->setCellValue("AV{$row}", $paciente->CCDespesor);
+            $sheet->setCellValue("AW{$row}", $paciente->MLDespesor);
+            $sheet->setCellValue("AX{$row}", $paciente->CCIespesor);
+            $sheet->setCellValue("AY{$row}", $paciente->MLIespesor);
+
+            // AZ–BA: Lado derecho/izquierdo
+            $sheet->setCellValue("AZ{$row}", $paciente->lado_derecho ? 'Si' : 'No');
+            $sheet->setCellValue("BA{$row}", $paciente->lado_izquierdo ? 'Si' : 'No');
+
+            $row++;
+            $consecutivo++;
+        }
+
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+
+        $filename = "RES.4505-{$paciente->Lugar}-{$ano}.xlsx";
+
+        return new StreamedResponse(function () use ($writer) {
+             if (ob_get_length()) {
+                 ob_end_clean();
+            }
+            $writer->save('php://output');
+        }, 200, [
+            'Content-Type'        => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'Content-Disposition' => 'attachment;filename="' . $filename . '"',
+            'Cache-Control'       => 'max-age=0',
+        ]);
+    }
+
 }

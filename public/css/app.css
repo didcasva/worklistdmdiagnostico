@@ -328,7 +328,20 @@ select {
     margin-left: 15px;
     text-align: center;
 }
-
+.exportarexcelBtn {
+    width: 50%;
+    display: block;
+    padding: 10px;
+    border: none;
+    background-color: #757d8f;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 15px;
+    margin-left: 15px;
+    text-align: center;
+}
 .imagen .fotoBtn {
 
     display: block;

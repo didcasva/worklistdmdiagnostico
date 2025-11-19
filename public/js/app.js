@@ -214,7 +214,45 @@ document.querySelector('.exportarBtn').addEventListener('click', function (event
         })
         .catch(error => console.error('Error en la exportación:', error));
 });
+// ==========================
+// 📤 Exportación 4505 en Excel
+// ==========================
+document.querySelector('.exportarexcelBtn').addEventListener('click', function (event) {
+    event.preventDefault();
 
+    const mensajeNotificacion = document.getElementById('mensajeNotificacion');
+    mensajeNotificacion.style.display = 'none';
+
+    fetch('/dmlist/public/pacientes/exportar-4505')
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(data => {
+                    mensajeNotificacion.textContent = data.message || 'No hay registros disponibles.';
+                    mensajeNotificacion.style.display = 'block';
+                    throw new Error(data.message);
+                });
+            }
+
+            return response.blob().then(blob => {
+                const disposition = response.headers.get('Content-Disposition');
+                let filename = "formato_4505.xlsx";
+
+                if (disposition && disposition.includes('filename=')) {
+                    filename = disposition.split('filename=')[1].trim();
+                }
+
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename.replace(/"/g, '');
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+            });
+        })
+        .catch(error => console.error('Error en la exportación 4505:', error));
+});
 // ==========================
 // ✅ Validaciones
 // ==========================
